@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Simulare locală SOLIS Sentinel. Telemetrie sintetică și detecție prin reguli, fără machine learning sau date reale SOLIS.">
+<title>SOLIS Sentinel · Simulare locală</title>
+<style>
+:root{color-scheme:dark;--bg:#101e25;--panel:#172a32;--ink:#eef5f3;--muted:#b3c5c8;--line:#334b55;--teal:#66d5bd;--gold:#f0be66;--danger:#ff9c91;--blue:#8cc5f1;--font:system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--font)}main{max-width:1280px;margin:auto;padding:38px 32px 48px}button,select{font:inherit}button,select,summary{cursor:pointer}button:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:4px}button{color:var(--ink);border:1px solid #57717a;background:transparent;border-radius:9px;padding:11px 17px;min-height:46px;font-weight:600}button:hover{background:#263f49}button:disabled{opacity:.45;cursor:not-allowed}button[aria-pressed=true]{background:#345047;border-color:var(--teal)}button.fault[aria-pressed=true]{background:#543631;border-color:var(--danger)}button.primary{background:var(--gold);border-color:var(--gold);color:#182830;min-width:138px}button.primary:hover{background:#ffd58b}select{background:var(--panel);color:var(--ink);padding:10px 12px;border:1px solid #57717a;border-radius:8px;min-height:46px}h1,h2,p{margin:0}h1{font-size:clamp(30px,4vw,46px);line-height:1.15;letter-spacing:-1px}h2{font-size:19px;font-weight:650}.eyebrow{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}.intro{display:flex;justify-content:space-between;gap:30px;align-items:flex-start}.subtitle{color:var(--muted);margin-top:13px;max-width:760px}.local{font-size:13px;color:var(--muted);white-space:nowrap;margin-top:7px}.local:before{content:'●';color:var(--teal);margin-right:7px}.disclosure{margin:21px 0 25px;color:var(--gold);font-size:14px}.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.controls label{color:var(--muted);display:flex;align-items:center;gap:8px;margin-left:auto;font-size:14px}.reset{font-weight:500}.meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin:17px 0 22px;color:var(--muted);font-size:14px}.clock{font-variant-numeric:tabular-nums;color:var(--ink)}.metrics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:19px 0;gap:16px}.metric-label{color:var(--muted);font-size:14px}.metric strong{display:block;font-size:29px;letter-spacing:-.7px;font-variant-numeric:tabular-nums;line-height:1.3;margin-top:4px}.metric small{color:var(--muted);font-size:12px}.chart-grid{display:grid;grid-template-columns:1.28fr 1fr;gap:28px;margin:25px 0}.chart{min-width:0}.chart-header{min-height:93px}.chart p{font-size:13px;color:var(--muted);margin:6px 0 10px}.legend{display:flex;flex-wrap:wrap;gap:15px;font-size:13px;color:var(--muted)}.legend span{display:flex;align-items:center;gap:6px}.swatch{width:22px;border-top:3px solid var(--teal)}.swatch.reported{border-top:3px dashed var(--gold)}.swatch.power{border-color:var(--blue)}svg{display:block;width:100%;height:280px;overflow:hidden}svg text{fill:var(--muted);font:12px var(--font)}.status{border:1px solid var(--line);border-left:4px solid var(--teal);background:var(--panel);padding:19px 22px;border-radius:8px;display:grid;grid-template-columns:1fr auto;gap:20px}.status[data-state=alert]{border-left-color:var(--danger)}.status[data-state=pending]{border-left-color:var(--gold)}.status-title{font-size:19px;font-weight:650}.status p{font-size:15px;color:var(--muted);max-width:790px;margin-top:4px}.residual{text-align:right;min-width:160px}.residual strong{display:block;font-size:27px;font-variant-numeric:tabular-nums}.residual span{font-size:13px;color:var(--muted)}.lower{display:grid;grid-template-columns:1.15fr 1fr;gap:35px;margin-top:27px}.journal{padding:0;list-style:none;margin:12px 0 0}.journal li{padding:10px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:53px 1fr;gap:12px;font-size:14px}.journal time{color:var(--gold);font-variant-numeric:tabular-nums}.journal small{display:block;color:var(--muted);font-size:13px}.empty{color:var(--muted);font-size:14px;margin-top:12px}.guide ol{padding-left:23px;margin:10px 0;color:var(--muted);font-size:14px}.guide li{padding-bottom:9px}.guide b{color:var(--ink);font-weight:600}details{border-top:1px solid var(--line);margin-top:26px;padding-top:18px;font-size:14px;color:var(--muted)}summary{color:var(--ink);font-weight:600;min-height:40px}details p{margin-bottom:12px;max-width:1050px}.formula{color:var(--ink);font-family:ui-monospace,monospace;overflow-wrap:anywhere}.endnote{margin-top:22px;color:var(--muted);font-size:12px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:900px){.chart-grid{grid-template-columns:1fr}.chart-header{min-height:80px}.controls label{margin-left:0}.intro{display:block}.local{margin-top:15px}.lower{grid-template-columns:1fr;gap:20px}}
+@media(max-width:540px){main{padding:24px 16px 30px}.metrics{grid-template-columns:1fr 1fr;gap:20px}.metric strong{font-size:26px}.status{grid-template-columns:1fr;gap:12px}.residual{text-align:left}.residual strong{display:inline;font-size:22px}.residual span{margin-left:8px}.controls{gap:8px}.controls button{padding:10px 12px;font-size:14px}.controls label{width:100%;margin-top:4px}.chart-grid{gap:15px}.meta{font-size:13px}.disclosure{font-size:13px}h2{font-size:18px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main>
+<header class="intro"><div><div class="eyebrow">Prototip demonstrativ</div><h1>SOLIS Sentinel</h1><p class="subtitle">Când consumul crește, datele ar trebui să explice scăderea bateriei. Când senzorul greșește, căutăm neconcordanța.</p></div><div class="local">Rulează local, fără internet</div></header>
+<p class="disclosure">Date sintetice · Model energetic simplificat · Detecție prin reguli, fără ML · Fără date reale sau control asupra mașinii SOLIS</p>
+<section aria-label="Controalele simulării">
+<div class="controls">
+<button id="run" class="primary" type="button">Pornește</button>
+<button id="load" type="button" aria-pressed="false">Crește consumul</button>
+<button id="fault" class="fault" type="button" aria-pressed="false">Introdu eroare de senzor</button>
+<button id="reset" class="reset" type="button">Resetează</button>
+<label for="speed">Viteză simulare <select id="speed"><option value="1">1×</option><option value="5" selected>5×</option><option value="10">10×</option></select></label>
+</div>
+<div class="meta"><span id="scenario">Scenariu: consum normal, senzor fără eroare introdusă</span><span><span id="mode">În așteptare</span> · Timp simulat <span class="clock" id="clock">00:00</span></span></div>
+</section>
+<section class="metrics" aria-label="Ultimele valori">
+<div class="metric"><div class="metric-label">Baterie simulată</div><strong id="truth">60,0%</strong><small>Vizibilă doar pentru demonstrație</small></div>
+<div class="metric"><div class="metric-label">Baterie raportată</div><strong id="reported">60,0%</strong><small>Măsurătoare primită de detector</small></div>
+<div class="metric"><div class="metric-label">Putere consumată</div><strong id="power">500 W</strong><small id="electrical">100,8 V · 4,96 A</small></div>
+<div class="metric"><div class="metric-label">Reperul detectorului</div><strong id="expected">60,0%</strong><small>Estimare din tensiune și curent</small></div>
+</section>
+<section class="chart-grid" aria-label="Evoluția datelor">
+<div class="chart"><div class="chart-header"><h2>Nivelul bateriei</h2><p>Ultimele 120 s simulate. Curbele se suprapun în condiții normale.</p><div class="legend"><span><i class="swatch" aria-hidden="true"></i>Nivel simulat</span><span><i class="swatch reported" aria-hidden="true"></i>Nivel raportat</span></div></div><svg id="battery-chart" role="img" aria-labelledby="battery-title battery-desc"><title id="battery-title">Nivelul simulat și nivelul raportat al bateriei</title><desc id="battery-desc">Grafic actualizat după pornirea simulării.</desc></svg></div>
+<div class="chart"><div class="chart-header"><h2>Puterea consumată</h2><p>Tensiunea × curentul bateriei, cu descărcare pozitivă.</p><div class="legend"><span><i class="swatch power" aria-hidden="true"></i>Consum măsurat</span></div></div><svg id="power-chart" role="img" aria-labelledby="power-title power-desc"><title id="power-title">Puterea consumată în timp</title><desc id="power-desc">Grafic actualizat după pornirea simulării.</desc></svg></div>
+</section>
+<section class="status" id="status" data-state="normal" aria-label="Rezultatul detectorului">
+<div><div id="status-title" class="status-title">Fără neconcordanțe detectate</div><p id="status-body">Detectorul compară nivelul raportat cu un reper calculat din consum. Această stare nu garantează absența tuturor problemelor.</p></div>
+<div class="residual"><strong id="residual">0,00 pp</strong><span>Diferență față de reper</span></div>
+</section>
+<div class="sr-only" id="announcer" role="status" aria-live="polite"></div>
+<section class="lower">
+<div><h2>Jurnalul detectorului</h2><p class="empty" id="empty-log">Nu există alerte. Evenimentele apar numai după analiza măsurătorilor.</p><ol class="journal" id="journal" aria-label="Istoricul alertelor"></ol></div>
+<div class="guide"><h2>Trei pași pentru demonstrație</h2><ol><li><b>Pornește.</b> Observă cum bateria se descarcă treptat.</li><li><b>Crește consumul.</b> Așteaptă câteva secunde. Descărcarea se accelerează, dar măsurătorile rămân coerente.</li><li><b>Introdu eroarea.</b> Doar nivelul raportat scade cu 20 de puncte procentuale. Detectorul semnalează abaterea după 3 măsurători consecutive.</li></ol></div>
+</section>
+<details><summary>Cum funcționează și care sunt limitele?</summary>
+<p><b>Simulatorul</b> pornește de la 60% dintr-o capacitate energetică ipotetică de 1.000 Wh. Consum normal: aproximativ 500 W. Consum crescut: aproximativ 1.500 W. Procentul reprezintă energia disponibilă în model, nu o estimare electrochimică realistă a stării de încărcare. Nu modelăm panourile, temperatura, pierderile sau degradarea bateriei.</p>
+<p class="formula">E consumată [Wh] = tensiune [V] × curent [A] × interval [s] / 3.600</p>
+<p><b>Detectorul</b> cunoaște capacitatea ipotetică și primește exclusiv timpul, tensiunea, curentul și nivelul raportat. Pleacă de la prima măsurătoare a nivelului și scade consumul integrat. Nu primește nivelul simulat, starea butoanelor sau eticheta scenariului. Diferența este „nivel raportat − reper”. „pp” înseamnă puncte procentuale.</p>
+<p><b>Regula demonstrativă:</b> abatere absolută peste 1,5 pp la 3 măsurători consecutive pentru alertă. Revenire sub 0,75 pp la 3 măsurători consecutive pentru închiderea alertei. Pragurile sunt ilustrative și nu au fost validate pentru mașina SOLIS. Oprirea simulării oprește și timpul simulat.</p>
+<p><b>Limitări:</b> presupunem tensiune, curent și capacitate corecte și măsurători sincronizate. O eroare prezentă încă de la prima măsurătoare poate rămâne nedetectată. Erorile corelate și deriva reperului necesită evaluare separată. O neconcordanță cere verificare, fără diagnostic automat al unui senzor defect.</p>
+<p><b>Etapa ML:</b> un model ar putea detecta relații mai subtile pe înregistrări reale. L-am compara cu aceste reguli pe sesiuni separate și am măsura detecțiile, întârzierea și alarmele false. Demonstrația actuală nu conține o rețea neuronală.</p>
+</details>
+<p class="endnote">Concept de Răzvan-Ștefan Neamțu pentru candidatura SOLIS. Fișier autonom, fără conexiuni externe. Folosește „Resetează” pentru o nouă demonstrație.</p>
+</main>
+<script id="solis-core">
+'use strict';
+// This module has no DOM access. Detector only receives the packet allowlist below.
+(() => {
+ const config=Object.freeze({capacityWh:1000,initialPercent:60,thresholdPP:1.5,recoveryPP:.75,persistence:3});
+ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+ class Simulator {
+  constructor(){this.t=0;this.energyWh=config.capacityWh*config.initialPercent/100;this.highLoad=false;this.sensorFault=false;this.powerW=500;}
+  sample(){const actualPercent=100*this.energyWh/config.capacityWh;const voltage=96+8*actualPercent/100;const current=this.powerW/voltage;const reportedPercent=clamp(actualPercent-(this.sensorFault?20:0),0,100);return {actualPercent,packet:{t:this.t,voltage,current,reportedPercent}};}
+  step(){this.t+=1;const requested=(this.highLoad?1500:500)+20*Math.sin(this.t/9);this.powerW=Math.min(requested,this.energyWh*3600);this.energyWh=Math.max(0,this.energyWh-this.powerW/3600);return this.sample();}
+ }
+ class Detector {
+  constructor(capacityWh=config.capacityWh){if(!Number.isFinite(capacityWh)||capacityWh<=0)throw new Error('Capacitate invalidă');this.capacityWh=capacityWh;this.previousTime=null;this.expected=null;this.badCount=0;this.goodCount=0;this.active=false;}
+  ingest(packet){
+   const {t,voltage,current,reportedPercent}=packet;
+   if(![t,voltage,current,reportedPercent].every(Number.isFinite)||t<0||voltage<=0||reportedPercent<0||reportedPercent>100)throw new Error('Măsurătoare invalidă');
+   if(this.previousTime!==null&&t<=this.previousTime)throw new Error('Marcajele de timp trebuie să crească');
+   if(this.previousTime===null){this.expected=reportedPercent;}else{const dt=t-this.previousTime;this.expected=clamp(this.expected-(voltage*current*dt/3600)/this.capacityWh*100,0,100);}
+   this.previousTime=t;
+   const residual=reportedPercent-this.expected;let event=null;
+   if(Math.abs(residual)>config.thresholdPP){this.badCount++;this.goodCount=0;}else{this.badCount=0;this.goodCount=Math.abs(residual)<config.recoveryPP?this.goodCount+1:0;}
+   if(!this.active&&this.badCount>=config.persistence){this.active=true;event={type:'alert',t,residual};}
+   if(this.active&&this.goodCount>=config.persistence){this.active=false;event={type:'recovery',t,residual};}
+   const state=this.active?'alert':this.badCount?'pending':'normal';
+   return {state,expected:this.expected,residual,event,badCount:this.badCount};
+  }
+ }
+ globalThis.SolisCore=Object.freeze({Simulator,Detector,config});
+})();
+</script>
+<script id="solis-ui">
+'use strict';
+(() => {
+ const {Simulator,Detector}=SolisCore;
+ const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg';
+ let simulator,detector,history,result,packet,actual,events=[],running=false,timer=null;
+ const fmt=(n,d=1)=>n.toLocaleString('ro-RO',{minimumFractionDigits:d,maximumFractionDigits:d});
+ const clock=t=>`${Math.floor(t/60).toString().padStart(2,'0')}:${(t%60).toString().padStart(2,'0')}`;
+ const announce=message=>{$('announcer').textContent=message;};
+ function receive(sample){
+  // Only these four fields cross the detector boundary. Actual level is chart-only.
+  const {t,voltage,current,reportedPercent}=sample.packet;
+  packet={t,voltage,current,reportedPercent};actual=sample.actualPercent;
+  result=detector.ingest(packet);
+  history.push({t,actual,reported:reportedPercent,power:voltage*current});
+  history=history.slice(-121);
+  if(result.event){events.unshift(result.event);events=events.slice(0,12);renderLog();announce(result.event.type==='alert'?'Alertă: nivelul raportat nu corespunde consumului.':'Neconcordanța nu mai apare în ultimele trei măsurători.');}
+ }
+ function reset(){clearInterval(timer);timer=null;running=false;simulator=new Simulator();detector=new Detector();history=[];events=[];receive(simulator.sample());renderLog();render();}
+ function tick(){receive(simulator.step());if(simulator.energyWh<=0){pause();announce('Bateria simulată s-a descărcat. Resetează demonstrația.');}render();}
+ function schedule(){clearInterval(timer);if(running)timer=setInterval(tick,1000/Number($('speed').value));}
+ function pause(){running=false;clearInterval(timer);timer=null;}
+ $('run').addEventListener('click',()=>{if(running)pause();else if(simulator.energyWh>0){running=true;schedule();}render();});
+ $('load').addEventListener('click',()=>{simulator.highLoad=!simulator.highLoad;render();announce(simulator.highLoad?'Consum crescut selectat. Se aplică la următoarea măsurătoare.':'Consum normal selectat.');});
+ $('fault').addEventListener('click',()=>{simulator.sensorFault=!simulator.sensorFault;render();announce(simulator.sensorFault?'Eroare introdusă în nivelul raportat. Se aplică la următoarea măsurătoare.':'Eroare de senzor eliminată.');});
+ $('reset').addEventListener('click',()=>{reset();announce('Simularea a fost resetată.');});
+ $('speed').addEventListener('change',schedule);
+ function renderLog(){
+  $('empty-log').hidden=events.length>0;$('journal').replaceChildren();
+  for(const e of events){const li=document.createElement('li'),time=document.createElement('time'),body=document.createElement('div'),note=document.createElement('small');time.textContent=clock(e.t);body.textContent=e.type==='alert'?'Neconcordanță în nivelul bateriei':'Măsurătorile sunt din nou coerente';note.textContent=e.type==='alert'?`Diferență ${fmt(e.residual,2)} pp, confirmată în 3 măsurători. Verificați nivelul raportat și consumul.`:'Abatere sub 0,75 pp la 3 măsurători consecutive. Evenimentul rămâne în jurnal.';body.append(note);li.append(time,body);$('journal').append(li);}
+ }
+ function render(){
+  $('run').textContent=running?'Pauză':simulator.t?'Continuă':'Pornește';$('run').disabled=simulator.energyWh<=0;
+  $('load').textContent=simulator.highLoad?'Revino la consum normal':'Crește consumul';$('load').setAttribute('aria-pressed',String(simulator.highLoad));
+  $('fault').textContent=simulator.sensorFault?'Elimină eroarea de senzor':'Introdu eroare de senzor';$('fault').setAttribute('aria-pressed',String(simulator.sensorFault));
+  $('scenario').textContent=`Scenariu: consum ${simulator.highLoad?'crescut':'normal'}, ${simulator.sensorFault?'eroare de −20 pp în nivelul raportat':'senzor fără eroare introdusă'}`;
+  $('mode').textContent=simulator.energyWh<=0?'Baterie descărcată':running?'În desfășurare':simulator.t?'Pauză':'În așteptare';
+  $('clock').textContent=clock(packet.t);$('truth').textContent=fmt(actual,1)+'%';$('reported').textContent=fmt(packet.reportedPercent,1)+'%';$('expected').textContent=fmt(result.expected,1)+'%';$('power').textContent=fmt(packet.voltage*packet.current,0)+' W';$('electrical').textContent=`${fmt(packet.voltage)} V · ${fmt(packet.current,2)} A`;
+  $('residual').textContent=fmt(Math.abs(result.residual)<.0005?0:result.residual,2)+' pp';$('status').dataset.state=result.state;
+  const states={normal:['Fără neconcordanțe detectate','Nivelul raportat este compatibil cu reperul energetic. Această stare nu garantează absența tuturor problemelor.'],pending:['Abatere în curs de confirmare',`Diferența depășește pragul demonstrativ de 1,5 pp (${result.badCount}/3 măsurători). Detectorul așteaptă confirmarea.`],alert:['De verificat: nivelul raportat al bateriei','Nivelul raportat nu corespunde consumului măsurat. Verificați estimarea bateriei și măsurătorile asociate înainte de modificarea strategiei.']};
+  $('status-title').textContent=states[result.state][0];$('status-body').textContent=states[result.state][1];
+  drawCharts();
+ }
+ function element(tag,attributes={},content){const el=document.createElementNS(NS,tag);for(const [k,v]of Object.entries(attributes))el.setAttribute(k,String(v));if(content!==undefined)el.textContent=content;return el;}
+ function graph(svgId,series,ylabel){
+  const svg=$(svgId),w=Math.max(260,svg.clientWidth),h=280;
+  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+  svg.querySelectorAll('g.plot-root').forEach(n=>n.remove());
+  const g=element('g',{class:'plot-root'});svg.append(g);
+  const left=64,right=18,top=22,bottom=50,pw=w-left-right,ph=h-top-bottom;
+  const xmin=history[0].t,xmax=Math.max(xmin+10,packet.t);
+  const ys=history.flatMap(d=>series.map(s=>d[s.key]));let lo=Math.min(...ys),hi=Math.max(...ys);
+  if(svgId==='battery-chart'){const pad=Math.max(.4,(hi-lo)*.14);lo=Math.max(0,lo-pad);hi=Math.min(100,hi+pad);}else{lo=0;hi=Math.max(100,hi*1.18);}
+  if(hi===lo)hi=lo+1;
+  const x=t=>left+(t-xmin)/(xmax-xmin)*pw,y=v=>top+(hi-v)/(hi-lo)*ph;
+  for(let i=0;i<=4;i++){const value=lo+(hi-lo)*i/4,py=y(value);g.append(element('line',{x1:left,y1:py,x2:w-right,y2:py,stroke:'var(--line)','stroke-width':1}),element('text',{x:left-9,y:py+4,'text-anchor':'end'},fmt(value,svgId==='battery-chart'?1:0)));}
+  for(let i=0;i<=3;i++){const value=xmin+(xmax-xmin)*i/3,px=x(value);g.append(element('text',{x:px,y:h-28,'text-anchor':i===0?'start':i===3?'end':'middle'},fmt(value,0)));}
+  g.append(element('text',{x:left,y:13},ylabel),element('text',{x:left+pw/2,y:h-5,'text-anchor':'middle'},'Timp simulat (s)'));
+  for(const s of series){const pts=history.map(d=>`${x(d.t)},${y(d[s.key])}`).join(' ');g.append(element('polyline',{points:pts,fill:'none',stroke:s.color,'stroke-width':s.dash?2.5:3,'stroke-linejoin':'round','stroke-dasharray':s.dash||'none'}));const last=history[history.length-1];g.append(element('circle',{cx:x(last.t),cy:y(last[s.key]),r:4,fill:s.color}));}
+ }
+ function drawCharts(){graph('battery-chart',[{key:'actual',color:'var(--teal)'},{key:'reported',color:'var(--gold)',dash:'7 5'}],'Baterie (%)');graph('power-chart',[{key:'power',color:'var(--blue)'}],'Putere (W)');$('battery-desc').textContent=`La ${packet.t} secunde: nivel simulat ${fmt(actual)}%, nivel raportat ${fmt(packet.reportedPercent)}%.`; $('power-desc').textContent=`La ${packet.t} secunde: consum ${fmt(packet.voltage*packet.current,0)} wați.`;}
+ reset();
+ new ResizeObserver(drawCharts).observe(document.querySelector('.chart-grid'));
+})();
+</script>
+</body>
+</html>
